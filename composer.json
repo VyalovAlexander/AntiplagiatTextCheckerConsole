@@ -1,0 +1,15 @@
+{
+    "name": "vyalov/antiplagiat-text-checker-socket-server",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vyalov Alexander",
+            "email": "vyalov.alexander@gmail.com"
+        }
+    ],
+    "require": {
+        "php-di/php-di": "^6.0",
+        "mnapoli/silly": "^1.7",
+        "vyalovalexander/antiplagiat-text-checker": "1.0.2"
+    }
+}

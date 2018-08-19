@@ -1,0 +1,24 @@
+#! /usr/bin/env php
+<?php
+$container = require  __DIR__  . DIRECTORY_SEPARATOR . 'bootstrap.php';
+
+use Symfony\Component\Console\Output\OutputInterface;
+use VyalovAlexander\AntiplagiatTextChecker\Checker;
+
+$app = new Silly\Application();
+$app->useContainer($container, true, true);
+$app->command('check textFile',
+    function ($textFile, Checker $checker, OutputInterface $output) {
+        $text = file_get_contents($textFile);
+        $result1 = $checker->useDriver('ContentWatch')->check($text);
+        $result2 = $checker->useDriver('Copyscape')->check($text);
+        $result3 = $checker->useDriver('TextRU')->check($text);
+        $res = "\n" . 'Content-watch: ' . ($result1->isSuccess() ? 'uniqueness rate - ' . $result1->getResult() : 'error - ' . $result1->getError());
+        $res .= "\t\n" . 'Copyscape: ' . ($result2->isSuccess() ? 'uniqueness rate - ' . $result2->getResult() : 'error - ' . $result2->getError());
+        $res .= "\t\n" . 'Text.ru: ' . ($result3->isSuccess() ? 'uniqueness rate - ' . $result3->getResult() : 'error - ' . $result3->getError());
+        $output->write($res);
+    })->descriptions('check your text for plagiarism', [
+    'textFile' => 'file with text you want to check',
+]);
+
+$app->run();
